@@ -75,11 +75,8 @@ loop do
   loop do
     duration_remaining = gets.chomp
 
-    if valid_number?(duration_remaining)
-      break
-    else
-      prompt("Please enter a valid number for your remaining loan duration.")
-    end
+    break if valid_number?(duration_remaining)
+    cprompt("Please enter a valid number for your remaining loan duration.")
   end
 
   apr_decimal = apr.to_f / 100
