@@ -84,9 +84,10 @@ loop do
 
   apr_decimal = apr.to_f / 100
 
-  monthly_interest_rate = apr_decimal / duration_in_months.to_i
+  monthly_interest_rate = apr_decimal / 12
 
-  monthly_payment = loan_amount.to_f * (monthly_interest_rate * (1 + monthly_interest_rate)**duration_in_months.to_i) / ((1 + monthly_interest_rate)**duration_in_months.to_i - 1)
+  monthly_payment = (loan_amount.to_f * (monthly_interest_rate * (1 + monthly_interest_rate)**duration_in_months.to_i)) / (
+    ((1 + monthly_interest_rate)**duration_in_months.to_i) - 1)
 
   remaining_loan_balance = loan_amount.to_f * ((1 + monthly_interest_rate)**duration_in_months.to_i - (1 + monthly_interest_rate)**(duration_in_months.to_i - duration_remaining.to_i)) / ((1 + monthly_interest_rate)**duration_in_months.to_i - 1)
 
@@ -98,4 +99,4 @@ loop do
   break unless answer.downcase().start_with?('y')
 end
 
-promptf("Thank you for using Mortgage Calculator!")
+prompt("Thank you for using Mortgage Calculator!")
