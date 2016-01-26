@@ -1,13 +1,9 @@
-#require 'pry'
-
 VALID_CHOICES = %w(r p s l S)
 
 CHOICE_TRANSLATOR = { 'r' => 'rock', 'p' => 'paper', 's' => 'scissors', 'l' => 'lizard', 'S' => 'Spock' }
 
 player_wins = 0
 computer_wins = 0
-
-#binding.pry
 
 def prompt(message)
   Kernel.puts("=> #{message}")
@@ -21,14 +17,6 @@ def win?(first, second)
     (first == 'S' && ((second == 's') || (second == 'r')))
 end
 
-def tally_win(player, computer, player_wins, computer_wins)
-  if win?(player, computer)
-    player_wins += 1
-  elsif win?(computer, player)
-    computer_wins += 1
-  end
-end
-
 def display_results(player, computer)
   if win?(player, computer)
     prompt("You won!")
@@ -39,18 +27,19 @@ def display_results(player, computer)
   end
 end
 
-def game_over
-  if player_wins == 5
+def game_over(p_wins, c_wins)
+  if p_wins == 5
     prompt("You have won 5 times!  Congratulations!")
-  elsif computer_wins == 5
+  elsif c_wins == 5
     prompt("The computer has won 5 matches, and is the victor.")
   else
-    prompt("You have won #{player_wins} times, and the computer has won #{computer_wins} times.")
+    prompt("You have won #{p_wins} times, and the computer has won #{c_wins} times.")
   end
 end
 
 loop do
   choice = ''
+
   loop do
     prompt("Choose one: 'r' for rock, 'p' for paper, 's' for scissors, 'l' for lizard, or 'S' for Spock.")
     choice = Kernel.gets().chomp()
@@ -66,10 +55,15 @@ loop do
 
   prompt("You chose #{choice} for #{CHOICE_TRANSLATOR[choice]}, and the computer chose #{computer_choice} for #{CHOICE_TRANSLATOR[computer_choice]}.")
 
-  tally_win(choice, computer_choice, player_wins, computer_wins)
+  if win?(choice, computer_choice)
+    player_wins += 1
+  elsif win?(computer_choice, choice)
+    computer_wins += 1
+  end
+
   display_results(choice, computer_choice)
 
-  game_over
+  game_over(player_wins, computer_wins)
   break if (player_wins == 5) || (computer_wins == 5)
 end
 
